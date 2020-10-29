@@ -1,1 +1,13 @@
-a<->b
+In Search of Lost Time<->Proust, Marcel<->true<->null
+Ulysses<->Joyce, James<->true<->null
+Don Quixote<->de Cervantes, Miguel<->true<->null
+The Great Gatsby<->Fitzgerald, F. Scott<->true<->null
+One Hundred Years of Solitude<->Marquez, Gabriel Marquez<->true<->null
+Moby Dick<->Melville, Herman<->true<->null
+War and Peace<->Tolstoy, Leo<->true<->null
+Lolita<->Nabokov, Vladimir<->true<->null
+Hamlet<->Shakespeare, William<->true<->null
+The Catcher in the Rye<->Salinger, J.D<->true<->null
+The Odyssey<->Homer<->true<->null
+Crime and Punishment<->Dostoyevsky, Fyodor<->true<->null
+Othello<->Shakespeare, William<->true<->null
