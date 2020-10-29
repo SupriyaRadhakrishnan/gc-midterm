@@ -13,7 +13,7 @@ public class MidTerm {
 		String name = "Tim";
 		System.out.println(name);
 
-		System.out.println("Supriya");
+		System.out.println("Supriya!");
 	}
 
 }
