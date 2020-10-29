@@ -10,10 +10,14 @@ public class MidTerm {
 		System.out.println("But following David’s unifying leadership, they paired up and mowed down their foes.");
 		System.out.println("One-by-one every last pesky bug fell at the quick hands of the students.");
 		
-		String name = "Tim";
+		String name = "Supriya";
 		System.out.println(name);
 
+
 		System.out.println("Supriya!");
+
+		System.out.println("Tim");
+
 	}
 
 }
