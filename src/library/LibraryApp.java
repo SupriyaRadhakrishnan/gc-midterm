@@ -25,9 +25,10 @@ public class LibraryApp {
 		List<Book> listOfBooks = new ArrayList<Book>();
 		while (true) {
 			System.out.println("Welcome to GrandCircus Library!");
-			System.out.println("1-List the Books \n2-Search  \n3 Checkout \n4 Return \n5 Exit");
-			int userInput = Validator.getIntInRange(scnr, "Please enter an option:", 1, 5);
+			System.out.println("1-List the Books \n2-Search  \n3-Checkout \n4-Return \n5-Exit\n");
+			int userInput = Validator.getIntInRange(scnr, "Please enter an option: ", 1, 5);
 			if (userInput == 5) {
+				System.out.println("Thank You!");
 				break;
 			} else if (userInput == 1) {
 				try {
@@ -40,15 +41,36 @@ public class LibraryApp {
 						i++;
 					}
 				} catch (IOException e) {
-					System.out.println("Unable to display the list");
+					System.out.println("Unable to display the list.");
 				}
 			} else if (userInput == 2) {
 				try {
 					searchBooks();
 				} catch (IOException e) {
-					System.out.println("Unable to Search the list");
+					System.out.println("Unable to Search the list.");
 				}
 			} else if (userInput == 3) {
+				int i = 1;
+				try {
+					List<Book> listForCheckOut = displayBooks();
+                      System.out.println();
+					System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
+					for (Book book : listForCheckOut) {
+						System.out.println(String.format("%-5s %-30s", i + ".", book));
+						i++;
+					}
+					System.out.println();
+					boolean continueCheckOut = Validator.getYesNo(scnr, "Do you wanna continue checkout?(Yes/No)");
+					if (continueCheckOut) {
+						int selectedBook = Validator.getIntInRange(scnr, "Enter the book number: ", 1, i);
+
+						checkout(listForCheckOut.get(selectedBook - 1));
+					}
+				} catch (IOException e) {
+					System.out.println("Unable to checkout");
+				}
+			}
+			else if (userInput == 4) {
 				int i = 1;
 				try {
 					List<Book> listForCheckOut = displayBooks();
@@ -58,16 +80,17 @@ public class LibraryApp {
 						System.out.println(String.format("%-5s %-30s", i + ".", book));
 						i++;
 					}
-					boolean continueCheckOut = Validator.getYesNo(scnr, "Do you wanna continue checkout?(Yes/No)");
+					boolean continueCheckOut = Validator.getYesNo(scnr, "Do you wanna continue return?(Yes/No)");
 					if (continueCheckOut) {
-						int selectedBook = Validator.getIntInRange(scnr, "Enter the book number :", 1, i);
+						int selectedBook = Validator.getIntInRange(scnr, "Enter the book number: ", 1, i);
 
-						checkout(listForCheckOut.get(selectedBook - 1));
+						returnMedia(listForCheckOut.get(selectedBook - 1));
 					}
 				} catch (IOException e) {
-					System.out.println("Unable to checkout the list");
+					System.out.println("Unable to return the list");
 				}
 			}
+			
 		}
 	}
 
@@ -77,7 +100,7 @@ public class LibraryApp {
 		List<Book> listOfBooks = new ArrayList<Book>();
 		List<String> title = new ArrayList<String>();
 		List<String> authors = new ArrayList<>();
-		System.out.println("1 List by Title \n2 List by Author");
+		System.out.println("1-List by Title \n2-List by Author");
 		int userInput = Validator.getInt(scnr, "Enter Option: ");
 		for (String line : allLines) {
 			String[] values = line.split("<->");
@@ -111,7 +134,7 @@ public class LibraryApp {
 	}
 
 	public static void searchBooks() throws IOException {
-		System.out.println("1 Search by Author \n2 Search by Keyword");
+		System.out.println("1-Search by Author \n2-Search by Keyword");
 		int userInput = Validator.getIntInRange(scnr, "Enter Option: ", 1, 2);
 		List<Book> searchResults = new ArrayList<Book>();
 		int i = 1;
@@ -130,7 +153,7 @@ public class LibraryApp {
 
 	public static List<Book> searchByAuthor() throws IOException {
 		List<Book> searchByAuthorList = new ArrayList<Book>();
-		String authorName = Validator.getString(scnr, "Enter the Author name:");
+		String authorName = Validator.getString(scnr, "Enter the Author name: ");
 		List<String> allLines = Files.readAllLines(filename);
 		for (String eachLine : allLines) {
 			String[] values = eachLine.split("<->");
@@ -181,9 +204,9 @@ public class LibraryApp {
 			}
 		}
 		if(flag)
-			System.out.println(selectedBook.getTitle() + "is checked out successfully.\nDue Date: "
+			System.out.println(selectedBook.getTitle() + " is checked out successfully.\nDue Date: "
 				+ selectedBook.getDueDate());
-		else System.out.println("Book is currently unavailable");
+		else System.out.println("Book is currently unavailable.");
 	}
 
 	public static void addToFile(Book book) throws IOException {
@@ -192,5 +215,30 @@ public class LibraryApp {
 		List<String> lines = Collections.singletonList(line);
 		Files.write(filename, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 	}
+	public static void returnMedia(Book selectedBook) throws IOException {
+		List<String> allLines = Files.readAllLines(filename);
+		Files.newBufferedWriter(filename, StandardOpenOption.TRUNCATE_EXISTING);
+		boolean flag = false;
+		for (String eachLine : allLines) {
+			String[] values = eachLine.split("<->");
+			if (values[2].contentEquals("false")) {
+				if (values[0].equals(selectedBook.getTitle()) && values[1].equals(selectedBook.getAuthor())) {
+					flag = true;
+					selectedBook.setDueDate("00/00/0000");
+					selectedBook.setAvailable(true);
+					addToFile(new Book(values[0],values[1],selectedBook.isAvailable(), selectedBook.getDueDate()));
+				} else {
+					addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+				}
+				
+			} else {
+				addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+			}
+		}
+		if(flag)
+			System.out.println(selectedBook.getTitle() + " is returned out successfully.");
+	}
+	
+	
 
 }
