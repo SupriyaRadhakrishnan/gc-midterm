@@ -1,5 +1,7 @@
 package library;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Book {
@@ -7,7 +9,7 @@ public class Book {
 	private String title;
 	private String author;
 	private boolean isAvailable;
-	private String date;
+	private String dueDate;
 
 	public Book() {
 
@@ -17,11 +19,11 @@ public class Book {
 		this.title = title;
 		this.author = author;
 	}
-	public Book(String title, String author, boolean isAvailable, String date) {
+	public Book(String title, String author, boolean isAvailable, String dueDate) {
 		this.title = title;
 		this.author = author;
 		this.isAvailable = isAvailable;
-		this.date = date;
+		this.setDueDate(dueDate);
 	}
 
 	public String getTitle() {
@@ -48,14 +50,18 @@ public class Book {
 		this.author = author;
 	}
 
-	public String getDate() {
-		return date;
+	
+	
+
+	public String getDueDate() {
+		
+		return dueDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setDueDate(String date) {
+		this.dueDate = date;
 	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("%-30s %-30s",title,author);

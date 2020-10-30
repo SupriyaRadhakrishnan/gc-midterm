@@ -1,13 +1,13 @@
-In Search of Lost Time<->Proust, Marcel<->true<->null
-Ulysses<->Joyce, James<->true<->null
-Don Quixote<->de Cervantes, Miguel<->true<->null
-The Great Gatsby<->Fitzgerald, F. Scott<->true<->null
-One Hundred Years of Solitude<->Marquez, Gabriel Garcia<->true<->null
-Moby Dick<->Melville, Herman<->true<->null
-War and Peace<->Tolstoy, Leo<->true<->null
-Lolita<->Nabokov, Vladimir<->true<->null
-Hamlet<->Shakespeare, William<->true<->null
-The Catcher in the Rye<->Salinger, J.D<->true<->null
-The Odyssey<->Homer<->true<->null
-Crime and Punishment<->Dostoyevsky, Fyodor<->true<->null
-Othello<->Shakespeare, William<->true<->null
+In Search of Lost Time<->Proust, Marcel<->true<->00/00/0000
+Ulysses<->Joyce, James<->true<->00/00/0000
+Don Quixote<->de Cervantes, Miguel<->true<->00/00/0000
+The Great Gatsby<->Fitzgerald, F. Scott<->true<->00/00/0000
+One Hundred Years of Solitude<->Marquez, Gabriel Garcia<->true<->00/00/0000
+Moby Dick<->Melville, Herman<->true<->00/00/0000
+War and Peace<->Tolstoy, Leo<->true<->00/00/0000
+Lolita<->Nabokov, Vladimir<->true<->00/00/0000
+Hamlet<->Shakespeare, William<->true<->00/00/0000
+The Catcher in the Rye<->Salinger, J.D<->true<->00/00/0000
+The Odyssey<->Homer<->true<->00/00/0000
+Crime and Punishment<->Dostoyevsky, Fyodor<->true<->00/00/0000
+Othello<->Shakespeare, William<->true<->00/00/0000
