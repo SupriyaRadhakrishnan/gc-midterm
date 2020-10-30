@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +54,7 @@ public class LibraryApp {
 				int i = 1;
 				try {
 					List<Book> listForCheckOut = displayBooks();
-                      System.out.println();
+					System.out.println();
 					System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
 					for (Book book : listForCheckOut) {
 						System.out.println(String.format("%-5s %-30s", i + ".", book));
@@ -69,8 +70,7 @@ public class LibraryApp {
 				} catch (IOException e) {
 					System.out.println("Unable to checkout");
 				}
-			}
-			else if (userInput == 4) {
+			} else if (userInput == 4) {
 				int i = 1;
 				try {
 					List<Book> listForCheckOut = displayBooks();
@@ -90,7 +90,7 @@ public class LibraryApp {
 					System.out.println("Unable to return the list");
 				}
 			}
-			
+
 		}
 	}
 
@@ -149,6 +149,13 @@ public class LibraryApp {
 			System.out.println(String.format("%-5s %-30s", i + ".", book));
 			i++;
 		}
+		System.out.println();
+		boolean continueCheckOut = Validator.getYesNo(scnr, "Do you wanna continue checkout?(Yes/No)");
+		if (continueCheckOut) {
+			int selectedBook = Validator.getIntInRange(scnr, "Enter the book number: ", 1, i);
+
+			checkout(searchResults.get(selectedBook - 1));
+		}
 	}
 
 	public static List<Book> searchByAuthor() throws IOException {
@@ -191,54 +198,85 @@ public class LibraryApp {
 					Calendar calendar = Calendar.getInstance();
 					calendar.add(Calendar.DAY_OF_YEAR, 14);
 					SimpleDateFormat dateFormat1 = new SimpleDateFormat("MM/dd/YYYY");
-					Date date = calendar.getTime();				
+					Date date = calendar.getTime();
 					selectedBook.setDueDate(dateFormat1.format(date));
 					selectedBook.setAvailable(false);
-					addToFile(new Book(values[0],values[1],selectedBook.isAvailable(), selectedBook.getDueDate()));
+					addToFile(new Book(values[0], values[1], selectedBook.isAvailable(), selectedBook.getDueDate()));
 				} else {
-					addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+					addToFile(new Book(values[0], values[1], Boolean.parseBoolean(values[2]), values[3]));
 				}
-				
+
 			} else {
-				addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+				addToFile(new Book(values[0], values[1], Boolean.parseBoolean(values[2]), values[3]));
 			}
 		}
-		if(flag)
+		if (flag) {
 			System.out.println(selectedBook.getTitle() + " is checked out successfully.\nDue Date: "
-				+ selectedBook.getDueDate());
-		else System.out.println("Book is currently unavailable.");
+					+ selectedBook.getDueDate() + "\n");
+		} else {
+			System.out.println("Book is currently unavailable.\n");
+		}
 	}
 
 	public static void addToFile(Book book) throws IOException {
-		String line = book.getTitle() + "<->" + book.getAuthor() + "<->" + book.isAvailable() + "<->" + book.getDueDate() ;
+		String line = book.getTitle() + "<->" + book.getAuthor() + "<->" + book.isAvailable() + "<->"
+				+ book.getDueDate();
 
 		List<String> lines = Collections.singletonList(line);
 		Files.write(filename, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 	}
+
 	public static void returnMedia(Book selectedBook) throws IOException {
 		List<String> allLines = Files.readAllLines(filename);
 		Files.newBufferedWriter(filename, StandardOpenOption.TRUNCATE_EXISTING);
 		boolean flag = false;
+		boolean isOverDue = false;
 		for (String eachLine : allLines) {
 			String[] values = eachLine.split("<->");
 			if (values[2].contentEquals("false")) {
+				 isOverDue = isOverDue(values[3]);
 				if (values[0].equals(selectedBook.getTitle()) && values[1].equals(selectedBook.getAuthor())) {
 					flag = true;
 					selectedBook.setDueDate("00/00/0000");
 					selectedBook.setAvailable(true);
-					addToFile(new Book(values[0],values[1],selectedBook.isAvailable(), selectedBook.getDueDate()));
+					addToFile(new Book(values[0], values[1], selectedBook.isAvailable(), selectedBook.getDueDate()));
 				} else {
-					addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+					addToFile(new Book(values[0], values[1], Boolean.parseBoolean(values[2]), values[3]));
 				}
-				
+
 			} else {
-				addToFile(new Book(values[0],values[1],Boolean.parseBoolean(values[2]),values[3]));
+				addToFile(new Book(values[0], values[1], Boolean.parseBoolean(values[2]), values[3]));
 			}
 		}
-		if(flag)
-			System.out.println(selectedBook.getTitle() + " is returned out successfully.");
+		if (flag) {
+			if(isOverDue)
+			{
+				System.out.println(selectedBook.getTitle() + " is overdue. Please pay the late fee at the counter.");
+			}
+			System.out.println(selectedBook.getTitle() + " is returned in successfully.\n");
+			
+		} else {
+			System.out.println("Media is available for checkout cannot be returned.\n");
+		}
 	}
-	
-	
 
+	public static boolean isOverDue(String dueDate) {
+		SimpleDateFormat sdformat = new SimpleDateFormat("MM/dd/yyyy");
+		String today = sdformat.format(new Date());
+		Date d1 = null;
+		Date d2 = null;
+		try {
+			d1 = sdformat.parse(dueDate);
+			d2 = sdformat.parse(today);
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+		if (d1.compareTo(d2) < 0) {
+			return true;
+
+		} else {
+			return false;
+		}
+	}
 }
