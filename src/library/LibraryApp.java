@@ -162,6 +162,7 @@ public class LibraryApp {
 			}
 		}
 	}
+
 	public static List<Media> displayBooks() throws IOException {
 		List<String> allLines = Files.readAllLines(bookfile);
 		allLines.remove(null);
@@ -208,53 +209,44 @@ public class LibraryApp {
 		int i = 1;
 		if (userInput == 1) {
 			searchResults = searchByAuthor();
-		} 
-		else if(userInput == 2)
-		{
+		} else if (userInput == 2) {
 			searchResults = searchByDirector();
-		}
-		else if (userInput == 3) {
+		} else if (userInput == 3) {
 			searchResults = searchByKeyword();
 		}
 		if (searchResults.isEmpty()) {
 			System.out.println("\nNo results found.\n");
 		} else {
-			if(userInput ==1 || userInput==3)
-			{
+			if (userInput == 1 || userInput == 3) {
 				boolean noBookInstance = true;
-			System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
-			for (Media book : searchResults) {
-				if(book instanceof Book)
-				{
-					noBookInstance = false;
-				System.out.println(String.format("%-5s %-30s", i + ".", book));
-				i++;
+				System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
+				for (Media book : searchResults) {
+					if (book instanceof Book) {
+						noBookInstance = false;
+						System.out.println(String.format("%-5s %-30s", i + ".", book));
+						i++;
+					}
+				}
+				if (noBookInstance) {
+					System.out.println("No Books found");
 				}
 			}
-			if(noBookInstance)
-			{
-				System.out.println("No Books found");
-			}
-			}
-			if(userInput ==2|| userInput==3)
-			{
-			boolean noMoviesInstance = true;
-			System.out.println();
-			System.out.println(String.format("%-5s %-30s %-30s %-15s", "#", "Title", "Director", "Duration(mins)"));
-			for (Media movie : searchResults) {
-				if(movie instanceof Movie)
-				{
-					noMoviesInstance = false;
-					System.out.println(String.format("%-5s %-30s", i + ".", movie));
-				i++;
+			if (userInput == 2 || userInput == 3) {
+				boolean noMoviesInstance = true;
+				System.out.println();
+				System.out.println(String.format("%-5s %-30s %-30s %-15s", "#", "Title", "Director", "Duration(mins)"));
+				for (Media movie : searchResults) {
+					if (movie instanceof Movie) {
+						noMoviesInstance = false;
+						System.out.println(String.format("%-5s %-30s", i + ".", movie));
+						i++;
+					}
+				}
+				if (noMoviesInstance) {
+					System.out.println("No Movies found");
 				}
 			}
-			if(noMoviesInstance)
-			{
-				System.out.println("No Movies found");
-			}
-			}
-			
+
 			System.out.println();
 			boolean continueCheckOut = Validator.getYesNo(scnr, "Do you wanna continue checkout?(Yes/No)");
 			if (continueCheckOut) {
@@ -278,6 +270,7 @@ public class LibraryApp {
 		return searchByAuthorList;
 
 	}
+
 	public static List<Media> searchByDirector() throws IOException {
 		List<Media> searchByDirectorList = new ArrayList<Media>();
 		String directorName = Validator.getString(scnr, "Enter the Director name: ");
@@ -285,7 +278,7 @@ public class LibraryApp {
 		for (String eachLine : allLines) {
 			String[] values = eachLine.split("<->");
 			if ((values[1].toLowerCase()).contains(directorName.toLowerCase())) {
-				searchByDirectorList.add(new Movie(values[0], values[1],Integer.parseInt(values[4])));
+				searchByDirectorList.add(new Movie(values[0], values[1], Integer.parseInt(values[4])));
 			}
 		}
 		return searchByDirectorList;
@@ -303,13 +296,13 @@ public class LibraryApp {
 				searchByKeywordList.add(new Book(values[0], values[1]));
 			}
 		}
-			List<String> allmovieLines = Files.readAllLines(moviefile);
-			for (String line : allmovieLines) {
-				String[] value = line.split("<->");
-				if ((value[1].toLowerCase()).contains(keyword.toLowerCase())
-						|| (value[0].toLowerCase()).contains(keyword.toLowerCase())) {
-					searchByKeywordList.add(new Movie(value[0], value[1],Integer.parseInt(value[4])));
-				}
+		List<String> allmovieLines = Files.readAllLines(moviefile);
+		for (String line : allmovieLines) {
+			String[] value = line.split("<->");
+			if ((value[1].toLowerCase()).contains(keyword.toLowerCase())
+					|| (value[0].toLowerCase()).contains(keyword.toLowerCase())) {
+				searchByKeywordList.add(new Movie(value[0], value[1], Integer.parseInt(value[4])));
+			}
 
 		}
 		return searchByKeywordList;
@@ -420,11 +413,9 @@ public class LibraryApp {
 			returnMovie(allLines, (Movie) selectedMedia);
 		}
 
-		
 	}
 
-	public static void returnBook(List<String> listOfBooks,Book returnBook) throws IOException
-	{
+	public static void returnBook(List<String> listOfBooks, Book returnBook) throws IOException {
 		boolean flag = false;
 		boolean isOverDue = false;
 		for (String eachLine : listOfBooks) {
@@ -454,8 +445,8 @@ public class LibraryApp {
 			System.out.println("Book is available for checkout cannot be returned.\n");
 		}
 	}
-	public static void returnMovie(List<String> listOfMovie,Movie returnMovie) throws IOException
-	{
+
+	public static void returnMovie(List<String> listOfMovie, Movie returnMovie) throws IOException {
 		boolean flag = false;
 		boolean isOverDue = false;
 		for (String eachLine : listOfMovie) {
@@ -466,13 +457,16 @@ public class LibraryApp {
 					flag = true;
 					returnMovie.setDueDate("00/00/0000");
 					returnMovie.setAvailable(true);
-					addToFile(new Movie(values[0], values[1], returnMovie.isAvailable(), returnMovie.getDueDate(),Integer.parseInt(values[4])));
+					addToFile(new Movie(values[0], values[1], returnMovie.isAvailable(), returnMovie.getDueDate(),
+							Integer.parseInt(values[4])));
 				} else {
-					addToFile(new Movie(values[0], values[1], Boolean.parseBoolean(values[2]), values[3],Integer.parseInt(values[4])));
+					addToFile(new Movie(values[0], values[1], Boolean.parseBoolean(values[2]), values[3],
+							Integer.parseInt(values[4])));
 				}
 
 			} else {
-				addToFile(new Movie(values[0], values[1], Boolean.parseBoolean(values[2]), values[3],Integer.parseInt(values[4])));
+				addToFile(new Movie(values[0], values[1], Boolean.parseBoolean(values[2]), values[3],
+						Integer.parseInt(values[4])));
 			}
 		}
 		if (flag) {
@@ -485,6 +479,7 @@ public class LibraryApp {
 			System.out.println("Movie is available for checkout cannot be returned.\n");
 		}
 	}
+
 	public static boolean isOverDue(String dueDate) {
 		SimpleDateFormat sdformat = new SimpleDateFormat("MM/dd/yyyy");
 		String today = sdformat.format(new Date());
