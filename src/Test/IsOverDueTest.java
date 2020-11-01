@@ -1,16 +1,20 @@
 package Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import library.LibraryApp;
 
 class IsOverDueTest {
 
 	@Test
 	public void testSameDate() {
-		String dueDate = "10/31/2020";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = new Date();
+		String dueDate = dateFormat.format(date);		
 		Assertions.assertFalse(LibraryApp.isOverDue(dueDate));
 	}
 	@Test
