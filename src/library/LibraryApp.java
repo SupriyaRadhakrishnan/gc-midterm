@@ -36,7 +36,9 @@ public class LibraryApp {
 					System.out.println("1-Books \n2-Movies\n");
 					int viewOption = Validator.getIntInRange(scnr, "Please enter an option: ", 1, 2);
 					if (viewOption == 1) {
-						listOfMedia = displayBooks();
+						System.out.println("1-List by Title \n2-List by Author");
+						int userChoice = Validator.getInt(scnr, "Enter Option: ");
+						listOfMedia = displayBooks(userChoice);
 
 						int i = 1;
 						System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
@@ -46,7 +48,9 @@ public class LibraryApp {
 						}
 					}
 					if (viewOption == 2) {
-						listOfMedia = displayMovies();
+						System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
+						int userMovieChoice = Validator.getInt(scnr, "Enter Option: ");
+						listOfMedia = displayMovies(userMovieChoice);
 
 						int i = 1;
 						System.out.println(
@@ -74,7 +78,9 @@ public class LibraryApp {
 				if (checkoutOption == 1) {
 					int i = 1;
 					try {
-						List<Media> listForCheckOut = displayBooks();
+						System.out.println("1-List by Title \n2-List by Author");
+						int userChoice = Validator.getInt(scnr, "Enter Option: ");
+						List<Media> listForCheckOut = displayBooks(userChoice);
 						System.out.println();
 						System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
 						for (Media book : listForCheckOut) {
@@ -95,7 +101,9 @@ public class LibraryApp {
 				if (checkoutOption == 2) {
 					int i = 1;
 					try {
-						List<Media> listForCheckOut = displayMovies();
+						System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
+						int userMovieChoice = Validator.getInt(scnr, "Enter Option: ");
+						List<Media> listForCheckOut = displayMovies(userMovieChoice);
 						System.out.println(
 								String.format("%-5s %-30s %-30s %-15s", "#", "Title", "Director", "Duration(mins)"));
 						for (Media movie : listForCheckOut) {
@@ -120,7 +128,9 @@ public class LibraryApp {
 				if (returnOption == 1) {
 					int i = 1;
 					try {
-						List<Media> listForReturn = displayBooks();
+						System.out.println("1-List by Title \n2-List by Author");
+						int userChoice = Validator.getInt(scnr, "Enter Option: ");
+						List<Media> listForReturn = displayBooks(userChoice);
 						System.out.println();
 						System.out.println(String.format("%-5s %-30s %-30s", "#", "Title", "Author"));
 						for (Media book : listForReturn) {
@@ -141,7 +151,9 @@ public class LibraryApp {
 				if (returnOption == 2) {
 					int i = 1;
 					try {
-						List<Media> listForReturn = displayMovies();
+						System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
+						int userMovieChoice = Validator.getInt(scnr, "Enter Option: ");
+						List<Media> listForReturn = displayMovies(userMovieChoice);
 						System.out.println(
 								String.format("%-5s %-30s %-30s %-15s", "#", "Title", "Director", "Duration(mins)"));
 						for (Media movie : listForReturn) {
@@ -168,14 +180,12 @@ public class LibraryApp {
 	* if they want to see the list sorted with a comparator which sorts each
 	* list alphabetically by either option.  It then returns the sorted list.	* 
 	*/
-	public static List<Media> displayBooks() throws IOException {
+	public static List<Media> displayBooks(int userInput) throws IOException {
 		List<String> allLines = Files.readAllLines(bookfile);
 		allLines.remove(null);
 		List<Media> listOfBooks = new ArrayList<Media>();
 		List<String> title = new ArrayList<String>();
 		List<String> authors = new ArrayList<>();
-		System.out.println("1-List by Title \n2-List by Author");
-		int userInput = Validator.getInt(scnr, "Enter Option: ");
 		for (String line : allLines) {
 			String[] values = line.split("<->");
 			title.add(values[0]);
@@ -215,15 +225,13 @@ public class LibraryApp {
 	* returns the sorted list.	* 
 	*/
 	
-	public static List<Media> displayMovies() throws IOException {
+	public static List<Media> displayMovies(int userInput) throws IOException {
 		List<String> allLines = Files.readAllLines(moviefile);
 		allLines.remove(null);
 		List<Media> listOfMovies = new ArrayList<Media>();
 		List<String> title = new ArrayList<String>();
 		List<String> director = new ArrayList<>();
 		List<Integer> runtime = new ArrayList<>();
-		System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
-		int userInput = Validator.getInt(scnr, "Enter Option: ");
 		for (String line : allLines) {
 			String[] values = line.split("<->");
 			title.add(values[0]);
