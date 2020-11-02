@@ -24,14 +24,14 @@ public class LibraryGUI extends JFrame implements ActionListener
 	public LibraryGUI()
 	{
 		//set some behaviors of the GUI
-		setSize(300,200);
+		setSize(600,400);
 		setTitle("S&T Library");
 		setLocation(500, 500);		
 		
 		con = getContentPane();
 		
 		//add buttons to a grid in the panel
-		JPanel north = new JPanel( new FlowLayout());
+		JPanel north = new JPanel( new GridLayout());
 		
 		but1 = new JButton("List Books.txt");
 		but2 = new JButton("List Movies.txt");

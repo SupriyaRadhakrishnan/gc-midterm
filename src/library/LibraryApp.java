@@ -162,7 +162,12 @@ public class LibraryApp {
 			}
 		}
 	}
-
+	/*
+	* This method returns a list of Media which should be of type Book
+	* It reads all the lines from the bookfile asks the user in a Scanner 
+	* if they want to see the list sorted with a comparator which sorts each
+	* list alphabetically by either option.  It then returns the sorted list.	* 
+	*/
 	public static List<Media> displayBooks() throws IOException {
 		List<String> allLines = Files.readAllLines(bookfile);
 		allLines.remove(null);
@@ -201,7 +206,76 @@ public class LibraryApp {
 		}
 		return listOfBooks;
 	}
+	
+	/*
+	* This method returns a list of Media which should be of type Movie
+	* It reads all the lines from the moviefile asks the user in a Scanner 
+	* if they want to see the list sorted with a comparator which sorts each
+	* list alphabetically by either option and descending by runtime.  It then
+	* returns the sorted list.	* 
+	*/
+	
+	public static List<Media> displayMovies() throws IOException {
+		List<String> allLines = Files.readAllLines(moviefile);
+		allLines.remove(null);
+		List<Media> listOfMovies = new ArrayList<Media>();
+		List<String> title = new ArrayList<String>();
+		List<String> director = new ArrayList<>();
+		List<Integer> runtime = new ArrayList<>();
+		System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
+		int userInput = Validator.getInt(scnr, "Enter Option: ");
+		for (String line : allLines) {
+			String[] values = line.split("<->");
+			title.add(values[0]);
+			director.add((values[1]));
+			runtime.add(Integer.parseInt(values[4]));
+			listOfMovies.add(new Movie(values[0], values[1], Integer.parseInt(values[4])));
+		}
+		if (userInput == 1) {
+			Collections.sort(listOfMovies, new Comparator<Media>() {
 
+				@Override
+				public int compare(Media o1, Media o2) {
+
+					return o1.getTitle().compareTo(o2.getTitle());
+				}
+
+			});
+		} else if (userInput == 2) {
+			Collections.sort(listOfMovies, new Comparator<Media>() {
+
+				@Override
+				public int compare(Media o1, Media o2) {
+
+					return ((Movie) o1).getDirector().compareTo(((Movie) o2).getDirector());
+				}
+
+			});
+		} else if (userInput == 3) {
+			Collections.sort(listOfMovies, new Comparator<Media>() {
+
+				@Override
+				public int compare(Media o1, Media o2) {
+
+					return ((Movie) o1).getRuntime() - (((Movie) o2).getRuntime());
+				}
+
+			});
+		}
+		return listOfMovies;
+	}
+	
+	/*
+	 * This method is used to print the options for searching both files 
+	 * for Book and Movie.  It takes a user input and depending on the response
+	 * makes a call to the corresponding search method.  If no results are found the 
+	 * user gets a message.  It also displays a list of results for each Movie and Book and both 
+	 * for the keyword search which can return results for Book and Movie and none if there are
+	 * no results for the instance of each Book or Movie object.
+	 * 
+	 * The user is also prompted with the option to checkout after returning the 
+	 * search results by calling our checkout method
+	 */
 	public static void searchMedia() throws IOException {
 		System.out.println("1-Search Book by Author \n2-Search Movie by Director \n3-Search by Keyword");
 		int userInput = Validator.getIntInRange(scnr, "Enter Option: ", 1, 3);
@@ -259,7 +333,12 @@ public class LibraryApp {
 			}
 		}
 	}
-
+	/*
+	 * This method gets called from the searchMedia method and takes in a String input from the user
+	 * and returns a List of Media.  It reads all the files from the bookfile and displays the results
+	 * by checking if the string matches the value in the first 2 indices in the array created by splitting 
+	 * with our delimiter.
+	 */
 	public static List<Media> searchByAuthor(String authorName) throws IOException {
 		List<Media> searchByAuthorList = new ArrayList<Media>();
 
@@ -273,7 +352,12 @@ public class LibraryApp {
 		return searchByAuthorList;
 
 	}
-
+	/*
+	 * This method gets called in the searchMedia method and takes in a 
+	 * String for the Director name and returns a List of Media.  It is similar to the 
+	 * searchByAuthor media in nearly every way except it also will display the runtime
+	 * since it is returning a list of Movie objects.
+	 */
 	public static List<Media> searchByDirector(String directorName) throws IOException {
 		List<Media> searchByDirectorList = new ArrayList<Media>();
 
@@ -287,7 +371,14 @@ public class LibraryApp {
 		return searchByDirectorList;
 
 	}
-
+	/*
+	 * This method is called in the searchMedia and takes in a string for the search keyword
+	 * it returns a List of Media depending on the string entered.  It reads both the bookfile
+	 * and the moviefile and search's the indices for title, author and director and displays 
+	 * results for both and lets the user know if there are none of each class.  
+	 * 
+	 * 
+	 */
 	public static List<Media> searchByKeyword(String keyword) throws IOException {
 		List<Media> searchByKeywordList = new ArrayList<Media>();
 
@@ -310,7 +401,11 @@ public class LibraryApp {
 		}
 		return searchByKeywordList;
 	}
-
+	/*
+	 * This method takes in a single Media object and writes to the corresponding
+	 * *.txt file depending on the instanceof either Book or Movie.  For each object 
+	 * it also calls the checkoutBooks or checkoutMovies method.
+	 */
 	public static void checkout(Media selectedMedia) throws IOException {
 		if (selectedMedia instanceof Book) {
 			List<String> allLines = Files.readAllLines(bookfile);
@@ -323,7 +418,15 @@ public class LibraryApp {
 		}
 
 	}
-
+	/*
+	 * This method is called from the checkout method if the instance of the Media passed into
+	 * it is of the type Book.  It also takes in a String of allLines which is read from the corresponding 
+	 * Books.txt file.  It checks each line using our delimiter and also the values at each index.  If 
+	 * the values are equal it will change the isAvailable and dueDate variables accordingly to checkout the book
+	 * but updating isAvailable to false and setting the dueDate to 14 days from today.  If the values are not
+	 * equal it will write the lines as they were.  It also makes a check to see if the book can be checked out
+	 * and then displays a message once it's checked out successfully.
+	 */
 	public static void checkoutBooks(List<String> allLines, Book selectedBook) throws IOException {
 		boolean flag = false;
 		for (String eachLine : allLines) {
@@ -353,7 +456,15 @@ public class LibraryApp {
 			System.out.println("Book is currently unavailable.\n");
 		}
 	}
-
+	/*
+	 * This method is called from the checkout method if the instance of the Media passed into
+	 * it is of the type Movie.  It also takes in a String of allLines which is read from the corresponding 
+	 * Movies.txt file.  It checks each line using our delimiter and also the values at each index.  If 
+	 * the values are equal it will change the isAvailable and dueDate variables accordingly to checkout the movie
+	 * but updating isAvailable to false and setting the dueDate to 14 days from today.  If the values are not
+	 * equal it will write the lines as they were.  It also makes a check to see if the movie can be checked out
+	 * and then displays a message once it's checked out successfully.
+	 */
 	public static void checkoutMovies(List<String> allLines, Movie selectedMovie) throws IOException {
 		boolean flag = false;
 		for (String eachLine : allLines) {
@@ -386,7 +497,11 @@ public class LibraryApp {
 			System.out.println("Movie is currently unavailable.\n");
 		}
 	}
-
+	/*
+	 * This media is called in both the checkout and return methods to write lines to our Books.txt and Movies.txt files.
+	 * It takes in a single Media object, checks which instance of the object is passed in and writes the line according to
+	 * the type.  For Book there are only 4 fields and for Movie there are 5 and the are separated by the <-> delimiter
+	 */
 	public static void addToFile(Media media) throws IOException {
 
 		if (media instanceof Book) {
@@ -404,7 +519,12 @@ public class LibraryApp {
 			Files.write(moviefile, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		}
 	}
-
+	/*
+	 * This method is called from our main menu in the main() method and is very similar
+	 * to checkout in how it handles writing to our Movies.txt and Books.txt files. It checks the 
+	 * instance of the Media object it takes as a parameter and then calls the returnBook and 
+	 * returnMovie methods 
+	 */
 	public static void returnMedia(Media selectedMedia) throws IOException {
 		if (selectedMedia instanceof Book) {
 			List<String> allLines = Files.readAllLines(bookfile);
@@ -417,7 +537,16 @@ public class LibraryApp {
 		}
 
 	}
-
+	/*
+	 * This method is called from the return method if the instance of the Media passed into
+	 * it is of the type Book.  It also takes in a String of allLines which is read from the corresponding 
+	 * Books.txt file.  It checks each line using our delimiter and also the values at each index.  If 
+	 * the values are equal it will change the isAvailable and dueDate variables accordingly to checkout the book
+	 * but updating isAvailable to true and setting the dueDate back to our default placeholder date of 00/00/0000.  
+	 * If the values are not equal it will write the lines as they were.  It also makes a check to see 
+	 * if the book can be returned and then displays a message once it's returned successfully.  If it is over 
+	 * the user gets a message letting them know as well.
+	 */
 	public static void returnBook(List<String> listOfBooks, Book returnBook) throws IOException {
 		boolean flag = false;
 		boolean isOverDue = false;
@@ -448,7 +577,18 @@ public class LibraryApp {
 			System.out.println("Book is available for checkout cannot be returned.\n");
 		}
 	}
-
+	
+	/*
+	 * This method is called from the return method if the instance of the Media passed into
+	 * it is of the type Movie.  It also takes in a String of allLines which is read from the corresponding 
+	 * Movies.txt file.  It checks each line using our delimiter and also the values at each index.  If 
+	 * the values are equal it will change the isAvailable and dueDate variables accordingly to return the movie
+	 * but updating isAvailable to true and setting the dueDate back to our default placeholder date of 00/00/0000.  
+	 * If the values are not equal it will write the lines as they were.  It also makes a check to see 
+	 * if the movie can be returned and then displays a message once it's returned successfully.  If it is over 
+	 * the user gets a message letting them know as well.
+	 */
+	
 	public static void returnMovie(List<String> listOfMovie, Movie returnMovie) throws IOException {
 		boolean flag = false;
 		boolean isOverDue = false;
@@ -482,7 +622,11 @@ public class LibraryApp {
 			System.out.println("Movie is available for checkout cannot be returned.\n");
 		}
 	}
-
+	/*
+	 * This method is designed to check if an item is overdue.  It takes in a String for
+	 * the dueDate and converts it using the Date and SimpleDateFormat classes, it compares 
+	 * the two dates and returns a boolean result.
+	 */
 	public static boolean isOverDue(String dueDate) {
 		SimpleDateFormat sdformat = new SimpleDateFormat("MM/dd/yyyy");
 		String today = sdformat.format(new Date());
@@ -503,53 +647,5 @@ public class LibraryApp {
 		}
 	}
 
-	public static List<Media> displayMovies() throws IOException {
-		List<String> allLines = Files.readAllLines(moviefile);
-		allLines.remove(null);
-		List<Media> listOfMovies = new ArrayList<Media>();
-		List<String> title = new ArrayList<String>();
-		List<String> director = new ArrayList<>();
-		List<Integer> runtime = new ArrayList<>();
-		System.out.println("1-List by Title \n2-List by Director \n3-List by Runtime");
-		int userInput = Validator.getInt(scnr, "Enter Option: ");
-		for (String line : allLines) {
-			String[] values = line.split("<->");
-			title.add(values[0]);
-			director.add((values[1]));
-			runtime.add(Integer.parseInt(values[4]));
-			listOfMovies.add(new Movie(values[0], values[1], Integer.parseInt(values[4])));
-		}
-		if (userInput == 1) {
-			Collections.sort(listOfMovies, new Comparator<Media>() {
-
-				@Override
-				public int compare(Media o1, Media o2) {
-
-					return o1.getTitle().compareTo(o2.getTitle());
-				}
-
-			});
-		} else if (userInput == 2) {
-			Collections.sort(listOfMovies, new Comparator<Media>() {
-
-				@Override
-				public int compare(Media o1, Media o2) {
-
-					return ((Movie) o1).getDirector().compareTo(((Movie) o2).getDirector());
-				}
-
-			});
-		} else if (userInput == 3) {
-			Collections.sort(listOfMovies, new Comparator<Media>() {
-
-				@Override
-				public int compare(Media o1, Media o2) {
-
-					return ((Movie) o1).getRuntime() - (((Movie) o2).getRuntime());
-				}
-
-			});
-		}
-		return listOfMovies;
-	}
+	
 }
