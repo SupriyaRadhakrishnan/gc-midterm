@@ -208,11 +208,14 @@ public class LibraryApp {
 		List<Media> searchResults = new ArrayList<Media>();
 		int i = 1;
 		if (userInput == 1) {
-			searchResults = searchByAuthor();
+			String authorName = Validator.getString(scnr, "Enter the Author name: ");
+			searchResults = searchByAuthor(authorName);
 		} else if (userInput == 2) {
-			searchResults = searchByDirector();
+			String directorName = Validator.getString(scnr, "Enter the Director name: ");
+			searchResults = searchByDirector(directorName);
 		} else if (userInput == 3) {
-			searchResults = searchByKeyword();
+			String keyword = Validator.getString(scnr, "Enter the search keyword: ");
+			searchResults = searchByKeyword(keyword);
 		}
 		if (searchResults.isEmpty()) {
 			System.out.println("\nNo results found.\n");
@@ -257,9 +260,9 @@ public class LibraryApp {
 		}
 	}
 
-	public static List<Media> searchByAuthor() throws IOException {
+	public static List<Media> searchByAuthor(String authorName) throws IOException {
 		List<Media> searchByAuthorList = new ArrayList<Media>();
-		String authorName = Validator.getString(scnr, "Enter the Author name: ");
+
 		List<String> allLines = Files.readAllLines(bookfile);
 		for (String eachLine : allLines) {
 			String[] values = eachLine.split("<->");
@@ -271,9 +274,9 @@ public class LibraryApp {
 
 	}
 
-	public static List<Media> searchByDirector() throws IOException {
+	public static List<Media> searchByDirector(String directorName) throws IOException {
 		List<Media> searchByDirectorList = new ArrayList<Media>();
-		String directorName = Validator.getString(scnr, "Enter the Director name: ");
+
 		List<String> allLines = Files.readAllLines(moviefile);
 		for (String eachLine : allLines) {
 			String[] values = eachLine.split("<->");
@@ -285,9 +288,9 @@ public class LibraryApp {
 
 	}
 
-	public static List<Media> searchByKeyword() throws IOException {
+	public static List<Media> searchByKeyword(String keyword) throws IOException {
 		List<Media> searchByKeywordList = new ArrayList<Media>();
-		String keyword = Validator.getString(scnr, "Enter the search keyword: ");
+
 		List<String> allBookLines = Files.readAllLines(bookfile);
 		for (String eachLine : allBookLines) {
 			String[] values = eachLine.split("<->");

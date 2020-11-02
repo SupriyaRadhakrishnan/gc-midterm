@@ -18,8 +18,8 @@ class SearchByDirectorTest {
 		@Test 
 		void testMultipleSerachResultsFound() throws IOException {
 			String data = "Nolan";
-			System.setIn(new ByteArrayInputStream(data.getBytes()));
-			List<Media> movieActual = LibraryApp.searchByDirector();
+			//System.setIn(new ByteArrayInputStream(data.getBytes()));
+			List<Media> movieActual = LibraryApp.searchByDirector(data);
 			String expected = "The Dark Knight";
 			String actual = movieActual.get(0).getTitle();
 			assertEquals(expected, actual);

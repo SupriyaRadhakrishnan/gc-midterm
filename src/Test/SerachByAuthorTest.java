@@ -18,9 +18,8 @@ class SerachByAuthorTest {
 
 	@Test 
 	void testSerachResultsFound() throws IOException {
-		String data = "William";
-		System.setIn(new ByteArrayInputStream(data.getBytes()));	
-		List<Media> bookActual = LibraryApp.searchByAuthor();
+		String data = "William";	
+		List<Media> bookActual = LibraryApp.searchByAuthor(data);
 		String expected = "Hamlet";
 		String actual = bookActual.get(0).getTitle();
 		assertEquals(expected, actual);
