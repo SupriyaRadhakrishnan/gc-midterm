@@ -16,9 +16,8 @@ import library.Media;
 class SearchByDirectorTest {
 		
 		@Test 
-		void testMultipleSerachResultsFound() throws IOException {
+		void testMultipleSearchResultsFound() throws IOException {
 			String data = "Nolan";
-			//System.setIn(new ByteArrayInputStream(data.getBytes()));
 			List<Media> movieActual = LibraryApp.searchByDirector(data);
 			String expected = "The Dark Knight";
 			String actual = movieActual.get(0).getTitle();
@@ -27,6 +26,22 @@ class SearchByDirectorTest {
 			 actual = movieActual.get(1).getTitle();
 			assertEquals(expected, actual);
 	
+			
+		}
+		@Test 
+		void testSingleSearchResultsFound() throws IOException {
+			String data = "Chaplin";
+			List<Media> movieActual = LibraryApp.searchByDirector(data);
+			String expected = "Modern Times";
+			String actual = movieActual.get(0).getTitle();
+			assertEquals(expected, actual);
+			
+		}
+		@Test 
+		void testNoSearchResultsFound() throws IOException {
+			String data = "Supriya";
+			List<Media> movieActual = LibraryApp.searchByDirector(data);
+			assertTrue(movieActual.isEmpty());
 			
 		}
 	}

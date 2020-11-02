@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class SerachByAuthorTest {
 
 	@Test 
-	void testSerachResultsFound() throws IOException {
+	void testMulitipleSearchResultsFound() throws IOException {
 		String data = "William";	
 		List<Media> bookActual = LibraryApp.searchByAuthor(data);
 		String expected = "Hamlet";
@@ -26,6 +26,22 @@ class SerachByAuthorTest {
 		expected = "Othello";
 		actual = bookActual.get(1).getTitle();
 		assertEquals(expected, actual);
+		
+	}
+	@Test 
+	void testSingleSearchResultsFound() throws IOException {
+		String data = "Leo";
+		List<Media> bookActual = LibraryApp.searchByAuthor(data);
+		String expected = "War and Peace";
+		String actual = bookActual.get(0).getTitle();
+		assertEquals(expected, actual);
+		
+	}
+	@Test 
+	void testNoSearchResultsFound() throws IOException {
+		String data = "Supriya";
+		List<Media> bookActual = LibraryApp.searchByAuthor(data);
+		assertTrue(bookActual.isEmpty());
 		
 	}
 }
