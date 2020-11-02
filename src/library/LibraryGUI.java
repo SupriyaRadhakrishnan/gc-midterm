@@ -34,7 +34,7 @@ public class LibraryGUI extends JFrame implements ActionListener {
 		JPanel north = new JPanel(new FlowLayout());
 
 	//	but1 = new JButton("List Books.txt");
-		but2 = new JButton("Search by keyword");
+	//	but2 = new JButton("Search by keyword");
 		but3 = new JButton("Search Books by Author");
 		but4 = new JButton("Search Movies by Director");
 		but5 = new JButton("Display Books");
@@ -42,7 +42,7 @@ public class LibraryGUI extends JFrame implements ActionListener {
 		but7 = new JButton("Exit");
 
 	//	north.add(but1);
-		north.add(but2);
+	//	north.add(but2);
 		north.add(but3);
 		north.add(but4);
 		north.add(but5);
@@ -54,7 +54,7 @@ public class LibraryGUI extends JFrame implements ActionListener {
 
 		// add the listeners
 	//	but1.addActionListener(this);
-		but2.addActionListener(this);
+	//	but2.addActionListener(this);
 		but3.addActionListener(this);
 		but4.addActionListener(this);
 		but5.addActionListener(this);
