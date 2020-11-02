@@ -26,15 +26,15 @@ public class LibraryGUI extends JFrame implements ActionListener
 		//set some behaviors of the GUI
 		setSize(300,200);
 		setTitle("S&T Library");
-		setLocation(12, 500);		
+		setLocation(500, 500);		
 		
 		con = getContentPane();
 		
 		//add buttons to a grid in the panel
 		JPanel north = new JPanel( new FlowLayout());
 		
-		but1 = new JButton("List Books");
-		but2 = new JButton("List Movies");
+		but1 = new JButton("List Books.txt");
+		but2 = new JButton("List Movies.txt");
 		but3 = new JButton("Search");
 		but4 = new JButton("Return item");
 		but5 = new JButton("Exit");	
@@ -70,7 +70,7 @@ public class LibraryGUI extends JFrame implements ActionListener
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void actionPerformed(ActionEvent ae)
 	{
-		//button 1 - list books
+		//button 1 - list books.txt
 		if(ae.getSource() == but1)
 		{
 			String[] array = null;
@@ -85,13 +85,13 @@ public class LibraryGUI extends JFrame implements ActionListener
 			}
 			jf.add(new JList(array));
 			jf.pack();
-			jf.setTitle("Books!");
+			jf.setTitle("Books.txt");
 			jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			jf.setLocationRelativeTo(null);
 			jf.setVisible(true);					
 		}
 		
-		//button 2 list books
+		//button 2 list movies.txt
 		if(ae.getSource() == but2)
 		{
 			String[] array = null;
@@ -106,7 +106,7 @@ public class LibraryGUI extends JFrame implements ActionListener
 			}
 			jf.add(new JList(array));
 			jf.pack();
-			jf.setTitle("Movies!");
+			jf.setTitle("Movies.txt");
 			jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			jf.setLocationRelativeTo(null);
 			jf.setVisible(true);
@@ -115,7 +115,7 @@ public class LibraryGUI extends JFrame implements ActionListener
 		// button 3 - search
 		if(ae.getSource() == but3)
 		{
-			JOptionPane.showMessageDialog(but4, "Search goes here...", "Search", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(but3, "Search goes here...", "Search", JOptionPane.INFORMATION_MESSAGE);
 		
 		}
 		// button 4 - return
