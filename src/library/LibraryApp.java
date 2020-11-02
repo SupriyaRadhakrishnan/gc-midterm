@@ -175,10 +175,11 @@ public class LibraryApp {
 		}
 	}
 	/*
-	* This method returns a list of Media which should be of type Book
-	* It reads all the lines from the bookfile asks the user in a Scanner 
-	* if they want to see the list sorted with a comparator which sorts each
-	* list alphabetically by either option.  It then returns the sorted list.	* 
+	* This method returns a list of Media which should be of type Book. 
+	* It takes an integer input as a parameter for using the comparator to sort the list.
+	* It reads all the lines from the bookfile and uses the userinput value 
+	*  to see the list sorted with a comparator which sorts each
+	* list alphabetically by either option.  It then returns the sorted list.	
 	*/
 	public static List<Media> displayBooks(int userInput) throws IOException {
 		List<String> allLines = Files.readAllLines(bookfile);
@@ -218,11 +219,11 @@ public class LibraryApp {
 	}
 	
 	/*
-	* This method returns a list of Media which should be of type Movie
-	* It reads all the lines from the moviefile asks the user in a Scanner 
-	* if they want to see the list sorted with a comparator which sorts each
-	* list alphabetically by either option and descending by runtime.  It then
-	* returns the sorted list.	* 
+	* This method returns a list of Media which should be of type Movie.
+	* It takes an integer input as a parameter for using the comparator to sort the list.
+	* It reads all the lines from the moviefile and uses the input value to see the list 
+	* sorted with a comparator which sorts each list alphabetically by either option 
+	* and descending by runtime.  It then returns the sorted list.	
 	*/
 	
 	public static List<Media> displayMovies(int userInput) throws IOException {
